@@ -103,18 +103,6 @@ jobs:
           echo "latest_cscversion=$latest_csc" >> $GITHUB_ENV
           echo "need_update=$need_update" >> $GITHUB_ENV
 
-      - name: Cleanup space (1/2)
-        if: env.need_update == 1
-        uses: jlumbroso/free-disk-space@main
-        with:
-          tool-cache: true
-
-      - name: Cleanup space (2/2)
-        if: env.need_update == 1
-        uses: rokibhasansagar/slimhub_actions@main
-        with:
-          retain: 'compiler_cmake'
-
       - name: Install dependencies
         if: env.need_update == 1
         run: |
@@ -164,6 +152,14 @@ jobs:
           cd ..
           deactivate
           rm -rf py_env
+
+      # https://github.com/salvogiangri/UN1CA/blob/3.0.0/.github/workflows/build.yml#L25-L29
+      - name: Cleanup space
+        if: env.update == 1
+        run: |
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL
+          sudo docker image prune --all --force
+          sudo docker builder prune -a
 
       - name: Get path of files
         if: env.need_update == 1
