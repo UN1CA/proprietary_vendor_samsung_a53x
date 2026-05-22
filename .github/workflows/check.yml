@@ -155,7 +155,7 @@ jobs:
 
       # https://github.com/salvogiangri/UN1CA/blob/3.0.0/.github/workflows/build.yml#L25-L29
       - name: Cleanup space
-        if: env.update == 1
+        if: env.need_update == 1
         run: |
           sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL
           sudo docker image prune --all --force
